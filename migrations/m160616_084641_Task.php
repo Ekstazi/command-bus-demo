@@ -4,7 +4,8 @@ use yii\db\Migration;
 
 class m160616_084641_Task extends Migration
 {
-    const TABLE_NAME = 'Task';
+    // table prefix support used
+    const TABLE_NAME = '{{%Task}}';
 
     public function up()
     {
@@ -25,8 +26,8 @@ class m160616_084641_Task extends Migration
             'finished'   => $this->dateTime()->defaultValue(null),
             'result'     => $this->text(),
         ]);
-        $this->createIndex(self::TABLE_NAME . '_status', self::TABLE_NAME, 'status');
-        $this->createIndex(self::TABLE_NAME . '_deffer', self::TABLE_NAME, 'deffer');
+        $this->createIndex('task_status', self::TABLE_NAME, 'status');
+        $this->createIndex('task_deffer', self::TABLE_NAME, 'deffer');
 
         $this->insert(self::TABLE_NAME, [
             'id'         => 2971220,

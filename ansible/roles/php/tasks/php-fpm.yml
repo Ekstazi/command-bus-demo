@@ -1,0 +1,40 @@
+---
+- name: Set permissions on socket - owner
+  lineinfile: "dest=/etc/php5/fpm/pool.d/www.conf state=present regexp='^;?listen.owner' line='listen.owner = www-data'"
+
+- name: Set permissions on socket - group
+  lineinfile: "dest=/etc/php5/fpm/pool.d/www.conf state=present regexp='^;?listen.group' line='listen.group = www-data'"
+
+- name: Set permissions on socket - mode
+  lineinfile: "dest=/etc/php5/fpm/pool.d/www.conf state=present regexp='^;?listen.mode' line='listen.mode = 0660'"
+  notify: restart php5-fpm
+
+- name: ensure timezone is set in fpm php.ini
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp='date.timezone ='
+              line='date.timezone = {{ server.timezone }}'
+- name: enabling opcache
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp=';?opcache.enable=\d'
+              line='opcache.enable=1'
+
+- name: enabling short_tags
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp=';?short_open_tag = Off'
+              line='short_open_tag = On'
+
+- name: upload_max_size
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              line='upload_max_filesize = 20M'
+
+- name: upload_max_size
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              line='post_max_size = 20M'
+
+- name: enabling remote_debug
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              line='xdebug.remote_enable=1'
+
+- name: enabling remote_debug
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              line='xdebug.remote_connect_back=1'
